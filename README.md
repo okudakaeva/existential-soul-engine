@@ -44,8 +44,7 @@
    ```
 3. Запустите компиляцию и симуляцию саги:
    ```bash
-   npx tsc
-   node main
+   npx tsc && node main.js
    ```
 
 ---
