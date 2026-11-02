@@ -124,6 +124,7 @@ dist
 
 # Stores Visual Studio Code versions used for testing Visual Studio Code extensions
 .vscode-test
+.idea
 
 # pnpm
 .pnpm-store
@@ -147,3 +148,7 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# other
+**/*.js
+package-lock.json
