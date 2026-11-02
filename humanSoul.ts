@@ -132,9 +132,6 @@ export class SoulInstance implements HumanSoul {
     return this._bigot;
   }
 
-  /**
-   * Геттер для безопасного чтения базового визионерства
-   */
   public get isVisionary(): boolean {
     return this._isVisionary;
   }
