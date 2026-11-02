@@ -9,6 +9,7 @@
     "rewriteRelativeImportExtensions": true,
     "noEmit": false,
     "strict": true,
-    "types": ["node"] 
+    "types": ["node"],
+    "lib": ["ES2022"]
   }
 }

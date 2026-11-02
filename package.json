@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "npx tsc && node main.js"
+    "start": "npx tsc && node ./src/main.js"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",

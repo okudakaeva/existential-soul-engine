@@ -1,42 +1,52 @@
-import { SoulInstance } from "./humanSoul";
-import { Scene } from "./scene";
-import { 
-  absoluteEvil, absoluteGood, 
+import dictionary from './dictionary.json';
+import { SoulInstance } from './humanSoul';
+import { Scene } from './scene';
+import {
+  absoluteEvil, absoluteGood,
   agnosticSeeker, radicalAgnostic,
-  beckett, castle, 
+  beckett, castle,
   innateAtheist, radicalAtheist,
   innateFanatic, radicalFanatic,
   mulder, scully,
   author, personalAIAssistant,
-  heroes,  
-} from "./heroes";
-import dictionary from "./dictionary.json";
+  heroes,
+} from './heroes';
+import { Director } from './director';
 
-async function run() {
-  Scene.header(dictionary["word.header"]);
-  await Scene.type(dictionary["word.message"]);
-  await Scene.progress(dictionary["core.initialization"]);
-  await Scene.spinAndType(`${dictionary["absolute.label"]}${dictionary["absolute.acquaintance"]}`);
+async function run (): Promise<void> {
+  Scene.clear();
+  Director.initKeyboard();
+
+  await Scene.spinAndType(dictionary["common.welcome_rules"], 60);
+  await Scene.type(dictionary["common.pause"], 60);
+  await Scene.type(dictionary["common.exit"], 60);
+  await Scene.blockFooter(dictionary['divider.minus'], true);
+  Scene.clear();
+  Scene.header(dictionary['word.header']);
+  await Scene.type(dictionary['word.message']);
+  await Scene.progress(dictionary['core.initialization']);
+  await Scene.spinAndType(`${ dictionary['absolute.label'] }${ dictionary['absolute.acquaintance'] }`);
   Scene.header(dictionary['big_bang.header']);
   Scene.acquaintance(absoluteGood, absoluteEvil);
-  await Scene.spinAndType(`${dictionary["absolute.label"]}${dictionary["absolute.annihilation"]}`);
-  await Scene.bigBang(dictionary["universe.expansion"]);
+  await Scene.spinAndType(`${ dictionary['absolute.label'] }${ dictionary['absolute.annihilation'] }`);
+  Scene.break();
+  await Scene.bigBang();
   await Scene.delay();
-  await Scene.type(dictionary["universe.eternity"]);
+  await Scene.type(dictionary['universe.eternity']);
   await Scene.delay(1400);
   Scene.break();
-  await Scene.progress(dictionary["heroes.initialization"]);
+  await Scene.progress(dictionary['heroes.initialization']);
 
   Scene.header(dictionary['universe.civilization']);
-  await Scene.type(dictionary["sagas.god_is_love"]);
-  await Scene.type(dictionary["sagas.love_is_undefined"]);
+  await Scene.type(dictionary['sagas.god_is_love']);
+  await Scene.type(dictionary['sagas.love_is_undefined']);
   await Scene.type(dictionary['sagas.right_to_unknown']);
   await Scene.type(dictionary['sagas.truth_is_out_there']);
   await Scene.delay(1000);
   await Scene.type(dictionary['sagas.wont_to_believe']);
 
   Scene.header(dictionary['heroes.before_analytics']);
-  await Scene.type(dictionary["heroes.personal_params.calc"]);
+  await Scene.type(dictionary['heroes.personal_params.calc']);
   await Scene.card(dictionary['heroes.acquaintances.before.mulder'], mulder);
   await Scene.card(dictionary['heroes.acquaintances.before.scully'], scully);
   await Scene.card(dictionary['heroes.acquaintances.before.castle'], castle);
@@ -55,13 +65,13 @@ async function run() {
   await Scene.success(dictionary['heroes.acquaintances.stabilized']);
 
   Scene.header(dictionary['heroes.after_analytics']);
-  await Scene.type(dictionary["heroes.personal_params.update"]);
+  await Scene.type(dictionary['heroes.personal_params.update']);
   await Scene.card(dictionary['heroes.acquaintances.after.mulder'], mulder);
   await Scene.card(dictionary['heroes.acquaintances.after.scully'], scully);
   await Scene.card(dictionary['heroes.acquaintances.after.castle'], castle);
   await Scene.card(dictionary['heroes.acquaintances.after.beckett'], beckett);
 
-  await Scene.success(dictionary["heroes.personal_params.success"]);
+  await Scene.success(dictionary['heroes.personal_params.success']);
 
   Scene.header(dictionary['trust.protocol.header']);
   await Scene.spinAndType(dictionary['trust.protocol.run']);
@@ -116,7 +126,7 @@ async function run() {
   Scene.header(dictionary['theorem.love.header']);
   for (const hero of heroes) {
     await Scene.progress(dictionary['theorem.love.progress'], 1500);
-  
+
     Scene.blockHeader(dictionary['theorem.love.run']);
     Scene.text(dictionary['theorem.subject'], Scene.highlight(hero.name));
     Scene.text(dictionary['theorem.love.god'], hero.god);
@@ -127,7 +137,7 @@ async function run() {
   Scene.header(dictionary['theorem.logic.header']);
   for (const hero of heroes) {
     await Scene.progress(dictionary['theorem.logic.progress'], 1500);
-  
+
     Scene.blockHeader(dictionary['theorem.logic.run']);
     Scene.text(dictionary['theorem.subject'], Scene.highlight(hero.name));
     Scene.text(dictionary['theorem.logic.skeptic'], hero.isSkeptic);
@@ -143,6 +153,8 @@ async function run() {
   Scene.header(dictionary['sagas.final']);
   await Scene.type(dictionary['sagas.singularity']);
   await Scene.blockFooter(dictionary['sagas.the_end'], true);
+
+  Director.release();
 }
 
 run().then(() => Scene.break());
