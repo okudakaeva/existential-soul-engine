@@ -35,7 +35,6 @@
 
 1. Клонируйте репозиторий:
    ```bash
-   git clone https://github.com
    cd existential-soul-engine
    ```
 2. Установите зависимости:
