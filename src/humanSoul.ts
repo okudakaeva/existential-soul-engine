@@ -91,6 +91,11 @@ export class SoulInstance implements HumanSoul {
     this._bigot = bigot;
   }
 
+  private getRandomTrust (lim: [number, number] = [0.05, 0.20]): number {
+    const [min, max] = lim;
+    return Math.min(parseFloat((Math.random() * (max - min) + min).toFixed(2)), max);
+  }
+
   public get embeddedIdeasGenerator (): boolean {
     if (this.partner && this.partner.personalPolicy === PersonalPolicy.rebel) {
       return !!Mindset.visionary;
@@ -141,11 +146,6 @@ export class SoulInstance implements HumanSoul {
 
   public get isVisionary (): boolean {
     return this._isVisionary;
-  }
-
-  private getRandomTrust (lim: [number, number] = [0.05, 0.20]): number {
-    const [min, max] = lim;
-    return Math.min(parseFloat((Math.random() * (max - min) + min).toFixed(2)), max);
   }
 
   public acquaintance (partner: SoulInstance): void {

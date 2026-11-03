@@ -9,15 +9,17 @@ export const GLOBAL = {
 }
 
 export enum TermControls {
-  CLEAR_SCREEN = '\x1b[2J\x1b[H',  // Полная очистка холста и сброс в 0,0
-  SAVE_CURSOR  = '\x1b[s',         // Сохранить позицию и цвет каретки
-  RESTORE_CURSOR = '\x1b[u',       // Восстановить позицию и цвет каретки
-  UP_LINE      = '\x1b[A',         // Сдвиг каретки на 1 строку вверх
-  CLEAR_LINE   = '\r\x1b[K',       // Возврат в начало и полное выжигание строки
+  CLEAR_SCREEN = '\x1b[2J\x1b[H',
+  SAVE_CURSOR = '\x1b[s',
+  RESTORE_CURSOR = '\x1b[u',
+  UP_LINE = '\x1b[A',
+  CLEAR_LINE = '\r\x1b[K',
   COLOR_START = '\x1b',
   COLOR_END = 'm',
   NEW_LINE = '\n',
   CARRIAGE_RETURN = '\r',
   TAB = '\t',
-  SPACE = '\s',
 }
+
+export const CONTROL_TEST = /[\s\x1b.:,\-+—_![\]()\u2026]/;
+export const LINE_END_TEST = /[\r\n](?!\x1b)/;
