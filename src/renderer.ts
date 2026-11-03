@@ -64,7 +64,7 @@ export class Renderer {
     return [
       `${ dictionary['heroes.trust'] }${ hero.name }`,
       `${ dictionary['heroes.trust.to'] }${ hero.partner.name } `,
-      `${ up ? dictionary['heroes.trust.up']:dictionary['heroes.trust.down'] }`,
+      `${ up ? dictionary['heroes.trust.up'] : dictionary['heroes.trust.down'] }`,
       `${ dictionary['heroes.trust.by'] }**${ trustLevelPercent }%**`,
     ].join('');
   }
@@ -140,7 +140,7 @@ export class Renderer {
 
   public static* generateBigBang (): Generator<string, void> {
     for (let stage = 0; stage < Renderer.BIG_BANG_FRAMES.length; stage++) {
-      yield `${ TermControls.CLEAR_LINE }${TermControls.TAB.repeat(2)}${ Renderer.BIG_BANG_FRAMES[stage] }`;
+      yield `${ TermControls.CLEAR_LINE }${ TermControls.TAB.repeat(2) }${ Renderer.BIG_BANG_FRAMES[stage] }`;
     }
   }
 
@@ -175,7 +175,7 @@ export class Renderer {
 
   public static efficiency (hero: SoulInstance): string {
     return Renderer.message(
-        `${ Renderer.bindLabel(hero) }`,
+        `${ Renderer.bindLabel(hero) }: `,
         { color: Colors.sage, start: false }
     );
   }
@@ -229,7 +229,7 @@ export class Renderer {
 
       if (text.substring(i, i + 2) === '**') {
         if (!isInside) {
-          result += color === currentBaseColor || currentBaseColor === Colors.clear ? Colors.steel:color;
+          result += color === currentBaseColor || currentBaseColor === Colors.clear ? Colors.steel : color;
           isInside = true;
         } else {
           result += currentBaseColor;
@@ -250,4 +250,52 @@ export class Renderer {
     return result;
   }
 
+  public static card (hero: SoulInstance, dynamicOnly: boolean = true): string {
+    const locBool = (val: boolean | undefined) =>
+        val === undefined ? dictionary['card.boolean.undefined'] :
+            (val ? dictionary['card.boolean.true'] : dictionary['card.boolean.false']);
+
+    const policyLabel = !!hero.personalPolicy
+        ? dictionary['card.policy.conformist']
+        : dictionary['card.policy.rebel'];
+
+    const radicalLabel = !!hero.radicalist
+        ? dictionary['card.radical.radical']
+        : dictionary['card.radical.compromiser'];
+
+    const mindsetLabel = hero.isVisionary
+        ? dictionary['card.mindset.visionary']
+        : dictionary['card.mindset.pragmatist'];
+
+    let bigotLabel = dictionary['card.bigot.undefined'];
+
+    if (hero.bigot !== undefined) {
+      if (hero.bigot === 0) bigotLabel = dictionary['card.bigot.atheist'];
+      if (hero.bigot === 1) bigotLabel = dictionary['card.bigot.fanatic'];
+      if (hero.bigot === 2) bigotLabel = dictionary['card.bigot.agnostic'];
+    }
+    if (!!hero.radicalist) bigotLabel += dictionary['card.bigot.radical'];
+
+    const staticProps = [
+      dictionary['card.constant'],
+      `${ dictionary['card.policy.label'] }${ policyLabel };`,
+      `${ dictionary['card.radical.label'] }${ radicalLabel };`,
+      `${ dictionary['card.mindset.label'] }${ mindsetLabel };`,
+      `${ dictionary['card.bigot.label'] }${ bigotLabel };`,
+      dictionary['card.dynamic'],
+    ]
+    const props = [
+      ...(dynamicOnly ? [] : staticProps),
+      `${ dictionary['card.trust.label'] }${ (hero.trustLevel * 100).toFixed(0) }%;`,
+      `${ dictionary['card.stable.label'] }${ locBool(hero.isStabilized) };`,
+      `${ dictionary['card.ideas.label'] }${ locBool(hero.embeddedIdeasGenerator) };`,
+      `${ dictionary['card.believe.label'] }${ locBool(hero.hasWantToBelieve) };`,
+      `${ dictionary['card.seeker.label'] }${ locBool(hero.theTruthIsOutThere) };`,
+      `${ dictionary['card.truth.label'] }${ locBool(hero.hasRightsToTruth) };`,
+      `${ dictionary['card.love.label'] }${ locBool(hero.getIsExistLove()) };`,
+      `${ dictionary['card.god.label'] }${ locBool(hero.getIsExistGod()) };`
+    ];
+
+    return props.join(`${ TermControls.NEW_LINE }`);
+  }
 }

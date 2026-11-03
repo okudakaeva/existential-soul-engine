@@ -42,7 +42,7 @@ export const scully = new SoulInstance(
     Intent.skeptic,
     (): DogScent => { // всегда отрицает выводы Малдера
       if (scully.partner) {
-        return scully.partner.theTruthIsOutThere ? DogScent.dormant:DogScent.hound;
+        return scully.partner.theTruthIsOutThere ? DogScent.dormant : DogScent.hound;
       }
 
       return DogScent.unknown;
@@ -71,7 +71,7 @@ export const beckett = new SoulInstance(
     Radicalist.radical, // душнила
     PersonalPolicy.conformist,
     Mindset.pragmatist,
-    (): Intent => !!beckett.partner && beckett.trustLevel > 0.5 ? Intent.seeker:Intent.skeptic, // периодически верит в Касла
+    (): Intent => !!beckett.partner && beckett.trustLevel > 0.5 ? Intent.seeker : Intent.skeptic, // периодически верит в Касла
     DogScent.hound
 );
 // 5. Инициализируем Атеистов

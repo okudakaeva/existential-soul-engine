@@ -11,11 +11,10 @@ import {
   author, personalAIAssistant,
   heroes,
 } from './heroes';
-import { Director } from './director';
 
 async function run (): Promise<void> {
   Scene.clear();
-  Director.initKeyboard();
+  Scene.init();
 
   await Scene.spinAndType(dictionary["common.welcome_rules"], 60);
   await Scene.type(dictionary["common.pause"], 60);
@@ -53,8 +52,8 @@ async function run (): Promise<void> {
   await Scene.card(dictionary['heroes.acquaintances.before.beckett'], beckett);
 
   await Scene.type(dictionary['heroes.acquaintances.try']);
-  Scene.levelUpTrust(beckett, 0.7);
-  Scene.levelDownTrust(beckett, 0.3);
+  await Scene.updateTrustLevel(beckett, 0.7);
+  await Scene.updateTrustLevel(beckett, 0.3, false);
   await Scene.error(dictionary['heroes.acquaintances.try.error']);
 
   Scene.header(dictionary['heroes.acquaintances.header']);
@@ -76,17 +75,17 @@ async function run (): Promise<void> {
   Scene.header(dictionary['trust.protocol.header']);
   await Scene.spinAndType(dictionary['trust.protocol.run']);
   Scene.break();
-  await Scene.changeTrustLevel(beckett, 0.2);
-  await Scene.changeTrustLevel(beckett, 0.1);
-  await Scene.changeTrustLevel(beckett, 0.2);
+  await Scene.updateTrustLevel(beckett, 0.2);
+  await Scene.updateTrustLevel(beckett, 0.1);
+  await Scene.updateTrustLevel(beckett, 0.2);
   await Scene.error(dictionary['trust.protocol.error']);
-  await Scene.changeTrustLevel(beckett, 0.3, false);
+  await Scene.updateTrustLevel(beckett, 0.3, false);
   await Scene.spinAndType(dictionary['trust.protocol.next']);
   Scene.break();
-  await Scene.changeTrustLevel(beckett, 0.4);
-  await Scene.changeTrustLevel(beckett, 0.6);
+  await Scene.updateTrustLevel(beckett, 0.4);
+  await Scene.updateTrustLevel(beckett, 0.6);
   await Scene.error(dictionary['trust.protocol.error']);
-  await Scene.changeTrustLevel(beckett, 0.55, false);
+  await Scene.updateTrustLevel(beckett, 0.55, false);
   await Scene.error(dictionary['trust.protocol.fail']);
 
   Scene.header(dictionary['heroes.acquaintances.next.header']);
@@ -154,7 +153,7 @@ async function run (): Promise<void> {
   await Scene.type(dictionary['sagas.singularity']);
   await Scene.blockFooter(dictionary['sagas.the_end'], true);
 
-  Director.release();
+  Scene.release();
 }
 
 run().then(() => Scene.break());

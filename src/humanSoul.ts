@@ -83,12 +83,17 @@ export class SoulInstance implements HumanSoul {
     this.name = name;
     this.love = legacy > 0;
     this.radicalist = radicalist;
-    this.god = bigot !== undefined ? (bigot > 1 ? undefined:bigot > 0):this.love;
+    this.god = bigot !== undefined ? (bigot > 1 ? undefined : bigot > 0) : this.love;
     this.personalPolicy = personalPolicy ?? PersonalPolicy.rebel;
     this._truthIsOut = truthIsOut ?? DogScent.unknown;
     this._intent = intent ?? Intent.seeker;
     this._isVisionary = !!(hasIdeas ?? Mindset.pragmatist);
     this._bigot = bigot;
+  }
+
+  private getRandomTrust (lim: [number, number] = [0.05, 0.20]): number {
+    const [min, max] = lim;
+    return Math.min(parseFloat((Math.random() * (max - min) + min).toFixed(2)), max);
   }
 
   public get embeddedIdeasGenerator (): boolean {
@@ -109,14 +114,14 @@ export class SoulInstance implements HumanSoul {
     if (typeof this._truthIsOut === 'function') {
       const result = this._truthIsOut();
 
-      return result > 1 ? undefined:result > 0;
+      return result > 1 ? undefined : result > 0;
     }
 
-    return this._truthIsOut > 1 ? undefined:this._truthIsOut > 0;
+    return this._truthIsOut > 1 ? undefined : this._truthIsOut > 0;
   }
 
   public get hasWantToBelieve (): boolean {
-    return typeof this._intent === 'function' ? !!this._intent():!!this._intent;
+    return typeof this._intent === 'function' ? !!this._intent() : !!this._intent;
   }
 
   public get isSkeptic (): boolean {
@@ -143,11 +148,6 @@ export class SoulInstance implements HumanSoul {
     return this._isVisionary;
   }
 
-  private getRandomTrust (lim: [number, number] = [0.05, 0.20]): number {
-    const [min, max] = lim;
-    return Math.min(parseFloat((Math.random() * (max - min) + min).toFixed(2)), max);
-  }
-
   public acquaintance (partner: SoulInstance): void {
     this.partner = partner;
     this.levelUpTrust(this.getRandomTrust());
@@ -159,11 +159,11 @@ export class SoulInstance implements HumanSoul {
   }
 
   public levelUpTrust (value: number): void {
-    this.trustLevel = this.partner ? Math.min(this.trustLevel + value, 1.0):0.0;
+    this.trustLevel = this.partner ? Math.min(this.trustLevel + value, 1.0) : 0.0;
   }
 
   public levelDownTrust (value: number): void {
-    this.trustLevel = this.partner ? Math.max(this.trustLevel - value, 0.0):0.0;
+    this.trustLevel = this.partner ? Math.max(this.trustLevel - value, 0.0) : 0.0;
   }
 
   public getIsExistLove (): boolean {

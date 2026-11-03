@@ -1,4 +1,4 @@
-import { GLOBAL, TermControls } from './GLOBAL';
+import { CONTROL_TEST, GLOBAL, LINE_END_TEST, TermControls } from './GLOBAL';
 import readline from 'readline';
 
 export class Director {
@@ -28,9 +28,9 @@ export class Director {
 
       if (!isAnsiOnly && frame !== '') {
         let currentDelay = delayMs;
-        const isWhitespaceOrControl = /[\s\x1b.:,\-—_![\]()\u2026]/.test(frame);
-        const isLineEnd = /[\r\n](?!\x1b)/.test(frame);
-        if (!isWhitespaceOrControl || frame.startsWith(TermControls.CLEAR_LINE)) {
+        const isControl = CONTROL_TEST.test(frame);
+        const isLineEnd = LINE_END_TEST.test(frame);
+        if (!isControl || frame.startsWith(TermControls.CLEAR_LINE)) {
           currentDelay = delayMs * Director.LETTER_DELAY_MULTIPLIER;
         } else if (isLineEnd) {
           currentDelay = delayMs * Director.FINAL_PAUSE_STEPS;
@@ -71,7 +71,7 @@ export class Director {
     let bangItem = bangGen.next();
     let labelItem = labelGenerator.next();
 
-    process.stdout.write(`${TermControls.NEW_LINE.repeat(2)}`);
+    process.stdout.write(`${ TermControls.NEW_LINE.repeat(2) }`);
 
     while (!bangItem.done && !labelItem.done && Director.isRunning) {
       if (Director.isPaused) {
@@ -80,7 +80,7 @@ export class Director {
       }
 
       process.stdout.write(
-          `${TermControls.UP_LINE.repeat(2)}${TermControls.CLEAR_LINE}` +
+          `${ TermControls.UP_LINE.repeat(2) }${ TermControls.CLEAR_LINE }` +
           bangItem.value + TermControls.NEW_LINE.repeat(2)
       );
 
@@ -108,7 +108,7 @@ export class Director {
     }
   }
 
-  public static initKeyboard(): void {
+  public static initKeyboard (): void {
     readline.emitKeypressEvents(process.stdin as unknown as NodeJS.ReadableStream);
     if (process.stdin.isTTY) process.stdin.setRawMode(true);
     process.stdin.resume();
@@ -128,11 +128,15 @@ export class Director {
     });
   }
 
-  public static release(): void {
+  public static release (): void {
     Director.isRunning = false;
     if (process.stdin.isTTY) {
       process.stdin.setRawMode(false);
     }
     process.stdin.pause();
+  }
+
+  public static clearScreen (): void {
+    process.stdout.write(TermControls.CLEAR_SCREEN);
   }
 }
