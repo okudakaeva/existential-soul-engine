@@ -8,6 +8,7 @@ export class Scene {
   private static object (header: string, properties: string): void {
     Scene.text(`${ Renderer.objectHeader(header) }:${ Renderer.properties(properties) }`);
   }
+
   public static highlight (message: string) {
     return Renderer.highlight(message);
   }
@@ -122,7 +123,7 @@ export class Scene {
   }
 
   public static clear (): void {
-    Director.clear();
+    Director.clearScreen();
   }
 
   public static init (): void {

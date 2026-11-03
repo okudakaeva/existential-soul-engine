@@ -46,8 +46,8 @@ export class Renderer {
   ): string {
     const defaults = { color: Colors.yellow, start: true, end: false };
     const props = Object.assign({}, defaults, params);
-    const start = props.start ? TermControls.NEW_LINE:'';
-    const end = props.end ? TermControls.NEW_LINE:'';
+    const start = props.start ? TermControls.NEW_LINE : '';
+    const end = props.end ? TermControls.NEW_LINE : '';
 
     return `${ start }${ props.color }${ message }${ Colors.clear }${ end }`;
   }
@@ -64,7 +64,7 @@ export class Renderer {
     return [
       `${ dictionary['heroes.trust'] }${ hero.name }`,
       `${ dictionary['heroes.trust.to'] }${ hero.partner.name } `,
-      `${ up ? dictionary['heroes.trust.up']:dictionary['heroes.trust.down'] }`,
+      `${ up ? dictionary['heroes.trust.up'] : dictionary['heroes.trust.down'] }`,
       `${ dictionary['heroes.trust.by'] }**${ trustLevelPercent }%**`,
     ].join('');
   }
@@ -119,7 +119,7 @@ export class Renderer {
       const char = String.fromCodePoint(codePoint);
       currentText += char;
 
-      i += codePoint > 0xffff ? 2:1;
+      i += codePoint > 0xffff ? 2 : 1;
 
       if (useSpinner) {
         yield Renderer.spinner(step++, currentText);
@@ -229,7 +229,7 @@ export class Renderer {
 
       if (text.substring(i, i + 2) === '**') {
         if (!isInside) {
-          result += color === currentBaseColor || currentBaseColor === Colors.clear ? Colors.steel:color;
+          result += color === currentBaseColor || currentBaseColor === Colors.clear ? Colors.steel : color;
           isInside = true;
         } else {
           result += currentBaseColor;
@@ -252,20 +252,20 @@ export class Renderer {
 
   public static card (hero: SoulInstance, dynamicOnly: boolean = true): string {
     const locBool = (val: boolean | undefined) =>
-        val === undefined ? dictionary['card.boolean.undefined']:
-            (val ? dictionary['card.boolean.true']:dictionary['card.boolean.false']);
+        val === undefined ? dictionary['card.boolean.undefined'] :
+            (val ? dictionary['card.boolean.true'] : dictionary['card.boolean.false']);
 
     const policyLabel = !!hero.personalPolicy
         ? dictionary['card.policy.conformist']
-        :dictionary['card.policy.rebel'];
+        : dictionary['card.policy.rebel'];
 
     const radicalLabel = !!hero.radicalist
         ? dictionary['card.radical.radical']
-        :dictionary['card.radical.compromiser'];
+        : dictionary['card.radical.compromiser'];
 
     const mindsetLabel = hero.isVisionary
         ? dictionary['card.mindset.visionary']
-        :dictionary['card.mindset.pragmatist'];
+        : dictionary['card.mindset.pragmatist'];
 
     let bigotLabel = dictionary['card.bigot.undefined'];
 
@@ -285,7 +285,7 @@ export class Renderer {
       dictionary['card.dynamic'],
     ]
     const props = [
-      ...(dynamicOnly ? []:staticProps),
+      ...(dynamicOnly ? [] : staticProps),
       `${ dictionary['card.trust.label'] }${ (hero.trustLevel * 100).toFixed(0) }%;`,
       `${ dictionary['card.stable.label'] }${ locBool(hero.isStabilized) };`,
       `${ dictionary['card.ideas.label'] }${ locBool(hero.embeddedIdeasGenerator) };`,

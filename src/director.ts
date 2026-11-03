@@ -136,7 +136,7 @@ export class Director {
     process.stdin.pause();
   }
 
-  public static clear (): void {
+  public static clearScreen (): void {
     process.stdout.write(TermControls.CLEAR_SCREEN);
   }
 }
