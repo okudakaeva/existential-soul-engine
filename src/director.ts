@@ -16,7 +16,7 @@ export class Director {
 
     while (!item.done && Director.isRunning) {
       if (Director.isPaused) {
-        await new Promise(resolve => setTimeout(resolve, Director.PAUSE_DELAY));
+        await Director.executeDelay(Director.PAUSE_DELAY);
         continue;
       }
 
@@ -35,13 +35,13 @@ export class Director {
         } else if (isLineEnd) {
           currentDelay = delayMs * Director.FINAL_PAUSE_STEPS;
         }
-        await new Promise(resolve => setTimeout(resolve, currentDelay));
+        await Director.executeDelay(currentDelay);
       }
 
       item = generator.next();
     }
 
-    await new Promise(resolve => setTimeout(resolve, delayMs * Director.FINAL_PAUSE_STEPS));
+    await Director.executeDelay(delayMs * Director.FINAL_PAUSE_STEPS);
   }
 
   public static async executeProgress (
@@ -53,12 +53,12 @@ export class Director {
 
     while (!item.done && Director.isRunning) {
       if (Director.isPaused) {
-        await new Promise(resolve => setTimeout(resolve, Director.PAUSE_DELAY));
+        await Director.executeDelay(Director.PAUSE_DELAY);
         continue;
       }
 
       process.stdout.write(item.value);
-      await new Promise(resolve => setTimeout(resolve, durationMs / steps));
+      await Director.executeDelay(durationMs / steps);
 
       item = generator.next();
     }
@@ -75,7 +75,7 @@ export class Director {
 
     while (!bangItem.done && !labelItem.done && Director.isRunning) {
       if (Director.isPaused) {
-        await new Promise(resolve => setTimeout(resolve, Director.PAUSE_DELAY));
+        await Director.executeDelay(Director.PAUSE_DELAY);
         continue;
       }
 
@@ -85,7 +85,7 @@ export class Director {
       );
 
       await Director.execute(labelItem.value, GLOBAL.BIG_BANG_CHUNK);
-      await new Promise(resolve => setTimeout(resolve, GLOBAL.BIG_BANG_FRAME_DELAY));
+      await Director.executeDelay(GLOBAL.BIG_BANG_FRAME_DELAY);
 
       bangItem = bangGen.next();
       labelItem = labelGenerator.next();
