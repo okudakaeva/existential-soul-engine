@@ -1,4 +1,20 @@
 {
+  "name": "existential-soul-engine",
+  "version": "1.0.0",
+  "author": "Oksana Kudakaeva https://github.com/okudakaeva",
+  "description": "Квантово-философский CLI-движок",
+  "license": "Custom Proprietary License (SEE IN LICENSE.md)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/okudakaeva/existential-soul-engine.git"
+  },
+  "homepage": "https://github.com/okudakaeva/existential-soul-engine",
+  "keywords": [
+    "existential",
+    "engine",
+    "generative-art",
+    "typescript"
+  ],
   "scripts": {
     "start": "npx tsc && node ./src/main.js"
   },
