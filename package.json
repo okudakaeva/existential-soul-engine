@@ -1,7 +1,7 @@
 {
   "name": "existential-soul-engine",
   "version": "1.0.0",
-  "author": "Oksana Kudakaeva https://github.com/okudakaeva",
+  "author": "Oksana Kudakaeva <https://github.com/okudakaeva>",
   "description": "Квантово-философский CLI-движок",
   "license": "Custom Proprietary License (SEE IN LICENSE.md)",
   "repository": {
