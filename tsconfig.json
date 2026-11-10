@@ -10,6 +10,12 @@
     "noEmit": false,
     "strict": true,
     "types": ["node"],
-    "lib": ["ES2022"]
+    "lib": ["ES2022"],
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "removeComments": true,
+    "forceConsistentCasingInFileNames": true
   }
 }

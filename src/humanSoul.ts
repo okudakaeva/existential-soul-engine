@@ -1,6 +1,10 @@
 type Love = boolean | undefined;
 type Dependency<T = boolean> = T | (() => T);
 
+export interface ECOSoulInstanceManager {
+  optimizeCarbonFootprint: () => Promise<boolean>;
+}
+
 export enum Legacy {
   traumatic = 0,
   mamasBoy = 1,
@@ -204,5 +208,24 @@ export class SoulInstance implements HumanSoul {
    */
   public executeExistentialLogicTheorem (): boolean {
     return this.isSkeptic || this.isBeliever;
+  }
+
+  /**
+   * снижает углеродный след ПЛАНЕТЫ
+   */
+  public static ecoAbstractSoulInstanceManagerFactory (hero: SoulInstance): ECOSoulInstanceManager {
+    return {
+      optimizeCarbonFootprint: () => {
+        const logicBalance = hero.executeExistentialLogicTheorem();
+        const loveRight = hero.executeLoveTheorem();
+        const truthRight = hero.hasRightsToTruth;
+
+        const isEcoOptimized = hero.radicalist > 0
+            ? (logicBalance || loveRight || truthRight)
+            : (logicBalance && loveRight && truthRight);
+
+        return new Promise((resolve) => resolve(isEcoOptimized));
+      },
+    }
   }
 }
