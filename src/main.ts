@@ -123,9 +123,21 @@ async function run (): Promise<void> {
   await Scene.success(dictionary['efficiency.result.success']);
   await Scene.error(dictionary['efficiency.result.fail']);
 
+  Scene.header(dictionary['theorem.logic.header']);
+  for (const hero of heroes) {
+    await Scene.progress(dictionary['theorem.logic.progress'], 1500);
+
+    Scene.blockHeader(dictionary['theorem.logic.run']);
+    Scene.text(dictionary['theorem.subject'], Scene.highlight(hero.name));
+    Scene.text(dictionary['theorem.logic.skeptic'], hero.isSkeptic);
+    Scene.text(dictionary['theorem.logic.believer'], hero.isBeliever);
+    Scene.text(dictionary['theorem.logic.total'], [hero.executeExistentialLogicTheorem()], dictionary['theorem.total']);
+    await Scene.blockFooter(dictionary['divider.equals']);
+  }
+
   Scene.header(dictionary['theorem.eco.header']);
   for (const hero of heroes) {
-    const ecoAbstractSoulInstanceManager = SoulInstance.ecoAbstractSoulInstanceManagerFactory();
+    const ecoAbstractSoulInstanceManager = SoulInstance.ecoAbstractSoulInstanceManagerFactory(hero);
     await Scene.spinAndType(`${dictionary['theorem.eco.factory']}${hero.name}${dictionary['theorem.eco.factory.end']}`);
     await Scene.progress(dictionary['theorem.eco.progress'], 1200);
 
@@ -138,18 +150,6 @@ async function run (): Promise<void> {
   }
 
   await Scene.success(dictionary['sagas.greenwashing']);
-
-  Scene.header(dictionary['theorem.logic.header']);
-  for (const hero of heroes) {
-    await Scene.progress(dictionary['theorem.logic.progress'], 1500);
-
-    Scene.blockHeader(dictionary['theorem.logic.run']);
-    Scene.text(dictionary['theorem.subject'], Scene.highlight(hero.name));
-    Scene.text(dictionary['theorem.logic.skeptic'], hero.isSkeptic);
-    Scene.text(dictionary['theorem.logic.believer'], hero.isBeliever);
-    Scene.text(dictionary['theorem.logic.total'], [hero.executeExistentialLogicTheorem()], dictionary['theorem.total']);
-    await Scene.blockFooter(dictionary['divider.equals']);
-  }
 
   Scene.header(dictionary['theorem.love.header']);
   for (const hero of heroes) {
