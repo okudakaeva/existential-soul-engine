@@ -118,7 +118,7 @@ async function run (): Promise<void> {
     Scene.efficiency(hero);
   });
   await Scene.blockFooter(dictionary['divider.minus'], true);
-  await Scene.spinAndType(dictionary['efficiency.analytics']);
+  await Scene.spinAndType(dictionary['result.analytics']);
   Scene.break();
   await Scene.success(dictionary['efficiency.result.success']);
   await Scene.error(dictionary['efficiency.result.fail']);
@@ -149,6 +149,7 @@ async function run (): Promise<void> {
     await Scene.blockFooter(dictionary['divider.equals']);
   }
 
+  await Scene.spinAndType(dictionary['result.analytics']);
   await Scene.success(dictionary['sagas.greenwashing']);
 
   Scene.header(dictionary['theorem.love.header']);
