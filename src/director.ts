@@ -4,9 +4,23 @@ import readline from 'readline';
 export class Director {
   private static isPaused = false;
   private static isRunning = true;
+  private static isSkipping = false;
+  private static isFastForward = false;
   private static readonly LETTER_DELAY_MULTIPLIER = 2;
   private static readonly FINAL_PAUSE_STEPS = 4;
   private static readonly PAUSE_DELAY = 100;
+
+  public static startHeaderSkip(): void {
+    Director.isSkipping = true;
+  }
+
+  public static stopHeaderSkip(): void {
+    Director.isSkipping = false;
+  }
+
+  public static get shouldFastForward(): boolean {
+    return Director.isFastForward || Director.isSkipping;
+  }
 
   public static async execute (
       generator: Generator<string, void, unknown>,
@@ -26,7 +40,7 @@ export class Director {
 
       const isAnsiOnly = frame.startsWith(TermControls.COLOR_START) && frame.endsWith(TermControls.COLOR_END);
 
-      if (!isAnsiOnly && frame !== '') {
+      if (!isAnsiOnly && frame !== '' && !Director.shouldFastForward) {
         let currentDelay = delayMs;
         const isControl = CONTROL_TEST.test(frame);
         const isLineEnd = LINE_END_TEST.test(frame);
@@ -41,7 +55,9 @@ export class Director {
       item = generator.next();
     }
 
-    await Director.executeDelay(delayMs * Director.FINAL_PAUSE_STEPS);
+    if (!Director.shouldFastForward) {
+      await Director.executeDelay(delayMs * Director.FINAL_PAUSE_STEPS);
+    }
   }
 
   public static async executeProgress (
@@ -58,7 +74,10 @@ export class Director {
       }
 
       process.stdout.write(item.value);
-      await Director.executeDelay(durationMs / steps);
+
+      if (!Director.shouldFastForward) {
+        await Director.executeDelay(durationMs / steps);
+      }
 
       item = generator.next();
     }
@@ -85,7 +104,10 @@ export class Director {
       );
 
       await Director.execute(labelItem.value, GLOBAL.BIG_BANG_CHUNK);
-      await Director.executeDelay(GLOBAL.BIG_BANG_FRAME_DELAY);
+
+      if (!Director.shouldFastForward) {
+        await Director.executeDelay(GLOBAL.BIG_BANG_FRAME_DELAY);
+      }
 
       bangItem = bangGen.next();
       labelItem = labelGenerator.next();
@@ -93,6 +115,8 @@ export class Director {
   }
 
   public static async executeDelay (timeoutMs: number = GLOBAL.RUN_DELAY): Promise<void> {
+    if (Director.shouldFastForward) return;
+
     let remaining = timeoutMs;
 
     while (remaining > 0 && Director.isRunning) {
@@ -124,6 +148,14 @@ export class Director {
         } else {
           process.stdout.write(TermControls.RESTORE_CURSOR);
         }
+      }
+
+      if (key.name === 'f' || str === 'а' || str === 'А') {
+        Director.isFastForward = !Director.isFastForward;
+      }
+
+      if (key.name === 'n' || str === 'т' || str === 'Т') {
+        Director.startHeaderSkip();
       }
     });
   }

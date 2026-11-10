@@ -298,4 +298,11 @@ export class Renderer {
 
     return props.join(`${ TermControls.NEW_LINE }`);
   }
+
+  public static ecoFactory(heroName: string): string {
+    return Renderer.message(
+        `${dictionary['theorem.eco.factory.name']}${heroName}${dictionary['theorem.eco.factory.init']}`,
+        { color: Colors.sage, start: false }
+    );
+  }
 }

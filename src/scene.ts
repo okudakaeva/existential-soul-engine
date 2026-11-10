@@ -31,6 +31,7 @@ export class Scene {
 
   public static header (message: string): void {
     Scene.text(Renderer.header(message));
+    Director.stopHeaderSkip();
   }
 
   public static blockHeader (header: string): void {
@@ -132,5 +133,9 @@ export class Scene {
 
   public static release (): void {
     Director.release();
+  }
+
+  public static ecoFactory(hero: SoulInstance): string {
+    return Renderer.ecoFactory(hero.name);
   }
 }

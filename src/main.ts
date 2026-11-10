@@ -18,6 +18,7 @@ async function run (): Promise<void> {
 
   await Scene.spinAndType(dictionary["common.welcome_rules"], 60);
   await Scene.type(dictionary["common.pause"], 60);
+  await Scene.type(dictionary["common.fast_forward"], 60);
   await Scene.type(dictionary["common.exit"], 60);
   await Scene.blockFooter(dictionary['divider.minus'], true);
   Scene.clear();
@@ -122,16 +123,21 @@ async function run (): Promise<void> {
   await Scene.success(dictionary['efficiency.result.success']);
   await Scene.error(dictionary['efficiency.result.fail']);
 
-  Scene.header(dictionary['theorem.love.header']);
+  Scene.header(dictionary['theorem.eco.header']);
   for (const hero of heroes) {
-    await Scene.progress(dictionary['theorem.love.progress'], 1500);
+    const ecoAbstractSoulInstanceManager = SoulInstance.ecoAbstractSoulInstanceManagerFactory();
+    await Scene.spinAndType(`${dictionary['theorem.eco.factory']}${hero.name}${dictionary['theorem.eco.factory.end']}`);
+    await Scene.progress(dictionary['theorem.eco.progress'], 1200);
 
-    Scene.blockHeader(dictionary['theorem.love.run']);
-    Scene.text(dictionary['theorem.subject'], Scene.highlight(hero.name));
-    Scene.text(dictionary['theorem.love.god'], hero.god);
-    Scene.text(dictionary['theorem.love.total'], [hero.executeLoveTheorem()], dictionary['theorem.total']);
+    Scene.blockHeader(dictionary['divider.equals']);
+    Scene.text(Scene.ecoFactory(hero));
+    Scene.text(dictionary['theorem.eco.carbon_factory']);
+    await Scene.text(dictionary['theorem.eco.carbon_compilation']);
+    await Scene.text(dictionary['theorem.eco.carbon_success'], [await ecoAbstractSoulInstanceManager.optimizeCarbonFootprint()]);
     await Scene.blockFooter(dictionary['divider.equals']);
   }
+
+  await Scene.success(dictionary['sagas.greenwashing']);
 
   Scene.header(dictionary['theorem.logic.header']);
   for (const hero of heroes) {
@@ -142,6 +148,17 @@ async function run (): Promise<void> {
     Scene.text(dictionary['theorem.logic.skeptic'], hero.isSkeptic);
     Scene.text(dictionary['theorem.logic.believer'], hero.isBeliever);
     Scene.text(dictionary['theorem.logic.total'], [hero.executeExistentialLogicTheorem()], dictionary['theorem.total']);
+    await Scene.blockFooter(dictionary['divider.equals']);
+  }
+
+  Scene.header(dictionary['theorem.love.header']);
+  for (const hero of heroes) {
+    await Scene.progress(dictionary['theorem.love.progress'], 1500);
+
+    Scene.blockHeader(dictionary['theorem.love.run']);
+    Scene.text(dictionary['theorem.subject'], Scene.highlight(hero.name));
+    Scene.text(dictionary['theorem.love.god'], hero.god);
+    Scene.text(dictionary['theorem.love.total'], [hero.executeLoveTheorem()], dictionary['theorem.total']);
     await Scene.blockFooter(dictionary['divider.equals']);
   }
 
