@@ -88,7 +88,7 @@
   "theorem.eco.factory.end": "...",
   "theorem.eco.carbon_compilation": "[ECO_COMPILE]: Углеродный след нативно снижен на уровне компиляции модулей!",
   "theorem.eco.carbon_success": "[ECO_SUCCESS]: Процесс утилизации серверов вогнан в виртуальный ноль... \n**Зеленая повестка выполнена!**",
-  "theorem.eco.carbon_factory": "**ECOAbstractSoulInstanceManagerFactory** implements\n\t**ECOSoulInstanceManagerFactory()**\n\t\t.ECOSoulInstanceManager\n\t\t\t.**optimizeCarbonFootprint()**;",
+  "theorem.eco.carbon_factory": "**(ECOSoulInstanceManagerFactory** implements\n\t**ECOAbstractSoulInstanceManagerFactory)**()\n\t\t.ECOSoulInstanceManager\n\t\t\t.**optimizeCarbonFootprint()**;",
   "theorem.eco.factory.name": "[ECO_FACTORY]: ",
   "theorem.eco.factory.init": " инициирует фабрику: ",
   "sagas.god_is_love": "  Христиане сказали: \"**Бог есть Любовь!**\"",
