@@ -1,6 +1,6 @@
-import dictionary from './dictionary.json';
-import { TermControls } from './GLOBAL';
-import { SoulInstance } from './humanSoul';
+import dictionary from './dictionary.json' with { type: 'json' };
+import { TermControls } from './GLOBAL.ts';
+import { SoulInstance } from './humanSoul.ts';
 
 export enum Colors {
   yellow = '\x1b[93m',
@@ -114,7 +114,9 @@ export class Renderer {
       }
 
       const codePoint = text.codePointAt(i);
-      if (codePoint === undefined) break;
+      if (codePoint === undefined) {
+        break;
+      }
 
       const char = String.fromCodePoint(codePoint);
       currentText += char;
@@ -240,7 +242,9 @@ export class Renderer {
       }
 
       const codePoint = text.codePointAt(i);
-      if (codePoint === undefined) break;
+      if (codePoint === undefined) {
+        break;
+      }
       const char = String.fromCodePoint(codePoint);
 
       result += char;
@@ -270,11 +274,20 @@ export class Renderer {
     let bigotLabel = dictionary['card.bigot.undefined'];
 
     if (hero.bigot !== undefined) {
-      if (hero.bigot === 0) bigotLabel = dictionary['card.bigot.atheist'];
-      if (hero.bigot === 1) bigotLabel = dictionary['card.bigot.fanatic'];
-      if (hero.bigot === 2) bigotLabel = dictionary['card.bigot.agnostic'];
+      if (hero.bigot === 0) {
+        bigotLabel = dictionary['card.bigot.atheist'];
+      }
+      if (hero.bigot === 1) {
+        bigotLabel = dictionary['card.bigot.fanatic'];
+      }
+      if (hero.bigot === 2) {
+        bigotLabel = dictionary['card.bigot.agnostic'];
+      }
     }
-    if (!!hero.radicalist) bigotLabel += dictionary['card.bigot.radical'];
+
+    if (!!hero.radicalist) {
+      bigotLabel += dictionary['card.bigot.radical'];
+    }
 
     const staticProps = [
       dictionary['card.constant'],
@@ -299,9 +312,9 @@ export class Renderer {
     return props.join(`${ TermControls.NEW_LINE }`);
   }
 
-  public static ecoFactory(heroName: string): string {
+  public static ecoFactory (heroName: string): string {
     return Renderer.message(
-        `${dictionary['theorem.eco.factory.name']}${heroName}${dictionary['theorem.eco.factory.init']}`,
+        `${ dictionary['theorem.eco.factory.name'] }${ heroName }${ dictionary['theorem.eco.factory.init'] }`,
         { color: Colors.sage, start: false }
     );
   }

@@ -171,7 +171,9 @@ export class SoulInstance implements HumanSoul {
   }
 
   public getIsExistLove (): boolean {
-    if (this.love) return true;
+    if (this.love) {
+      return true;
+    }
     return this.trustLevel > 0.7;
   }
 

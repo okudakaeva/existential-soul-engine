@@ -1,5 +1,5 @@
-import dictionary from './dictionary.json';
-import { Bigot, DogScent, Intent, Legacy, Mindset, PersonalPolicy, Radicalist, SoulInstance } from './humanSoul';
+import dictionary from './dictionary.json' with { type: 'json' };
+import { Bigot, DogScent, Intent, Legacy, Mindset, PersonalPolicy, Radicalist, SoulInstance } from './humanSoul.ts';
 
 // 0. Инициализируем краевые сущности: Добро и Зло
 export const absoluteGood = new SoulInstance(
