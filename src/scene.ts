@@ -1,8 +1,8 @@
-import dictionary from './dictionary.json';
-import { GLOBAL } from './GLOBAL';
-import { SoulInstance } from './humanSoul';
-import { Renderer } from './renderer';
-import { Director } from './director';
+import dictionary from './dictionary.json' with { type: 'json' };
+import { GLOBAL } from './GLOBAL.ts';
+import { SoulInstance } from './humanSoul.ts';
+import { Renderer } from './renderer.ts';
+import { Director } from './director.ts';
 
 export class Scene {
   private static object (header: string, properties: string): void {
@@ -14,7 +14,15 @@ export class Scene {
   }
 
   public static text (message: string, ...rest: any[]): void {
-    console.log(Scene.highlight(message), ...rest);
+    const formattedRest = rest.map(item =>
+        typeof item === 'object' ? JSON.stringify(item) : String(item)
+    ).join(' ');
+
+    const output = formattedRest
+        ? `${ Scene.highlight(message) } ${ formattedRest }\n`
+        : `${ Scene.highlight(message) }\n`;
+
+    Director.write(output);
   }
 
   public static async type (text: string, delayMs: number = GLOBAL.CHUNK): Promise<void> {
@@ -77,7 +85,9 @@ export class Scene {
       Scene.text(Renderer.levelDownTrust(hero));
     }
 
-    if (!hero.partner) return;
+    if (!hero.partner) {
+      return;
+    }
 
     await Scene.progress(dictionary['heroes.soul.matrix'], GLOBAL.MATRIX_READ);
 
@@ -135,7 +145,7 @@ export class Scene {
     Director.release();
   }
 
-  public static ecoFactory(hero: SoulInstance): string {
+  public static ecoFactory (hero: SoulInstance): string {
     return Renderer.ecoFactory(hero.name);
   }
 }

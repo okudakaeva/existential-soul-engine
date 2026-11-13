@@ -1,6 +1,6 @@
-import dictionary from './dictionary.json';
-import { SoulInstance } from './humanSoul';
-import { Scene } from './scene';
+import dictionary from './dictionary.json' with { type: 'json' };
+import { SoulInstance } from './humanSoul.ts';
+import { Scene } from './scene.ts';
 import {
   absoluteEvil, absoluteGood,
   agnosticSeeker, radicalAgnostic,
@@ -10,9 +10,9 @@ import {
   mulder, scully,
   author, personalAIAssistant,
   heroes,
-} from './heroes';
+} from './heroes.ts';
 
-async function run (): Promise<void> {
+export async function run(): Promise<void> {
   Scene.clear();
   Scene.init();
 
@@ -173,5 +173,3 @@ async function run (): Promise<void> {
 
   Scene.release();
 }
-
-run().then(() => Scene.break());

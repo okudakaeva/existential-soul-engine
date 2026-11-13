@@ -17,11 +17,16 @@
     "generative-art",
     "typescript"
   ],
+  "type": "module",
   "scripts": {
-    "start": "npx tsc && node ./src/main.js"
+    "start": "npx tsc && node ./src/cli.js",
+    "build:web": "npx tsc --outDir dist"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",
     "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "@xterm/xterm": "^6.0.0"
   }
 }

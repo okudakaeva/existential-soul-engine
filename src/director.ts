@@ -1,7 +1,8 @@
-import { CONTROL_TEST, GLOBAL, LINE_END_TEST, TermControls } from './GLOBAL';
-import readline from 'readline';
+import { CONTROL_TEST, GLOBAL, LINE_END_TEST, TermControls } from './GLOBAL.ts';
+import { ITerminalAdapter } from './terminal/terminalPort.ts';
 
 export class Director {
+  private static adapter: ITerminalAdapter | null = null;
   private static isPaused = false;
   private static isRunning = true;
   private static isSkipping = false;
@@ -10,15 +11,23 @@ export class Director {
   private static readonly FINAL_PAUSE_STEPS = 4;
   private static readonly PAUSE_DELAY = 100;
 
-  public static startHeaderSkip(): void {
+  public static setAdapter (adapter: ITerminalAdapter): void {
+    Director.adapter = adapter;
+  }
+
+  public static write (data: string): void {
+    Director.adapter?.write(data);
+  }
+
+  public static startHeaderSkip (): void {
     Director.isSkipping = true;
   }
 
-  public static stopHeaderSkip(): void {
+  public static stopHeaderSkip (): void {
     Director.isSkipping = false;
   }
 
-  public static get shouldFastForward(): boolean {
+  public static get shouldFastForward (): boolean {
     return Director.isFastForward || Director.isSkipping;
   }
 
@@ -35,8 +44,7 @@ export class Director {
       }
 
       const frame = item.value;
-
-      process.stdout.write(frame);
+      Director.write(frame);
 
       const isAnsiOnly = frame.startsWith(TermControls.COLOR_START) && frame.endsWith(TermControls.COLOR_END);
 
@@ -73,7 +81,7 @@ export class Director {
         continue;
       }
 
-      process.stdout.write(item.value);
+      Director.write(item.value);
 
       if (!Director.shouldFastForward) {
         await Director.executeDelay(durationMs / steps);
@@ -90,7 +98,7 @@ export class Director {
     let bangItem = bangGen.next();
     let labelItem = labelGenerator.next();
 
-    process.stdout.write(`${ TermControls.NEW_LINE.repeat(2) }`);
+    Director.write(`${ TermControls.NEW_LINE.repeat(2) }`);
 
     while (!bangItem.done && !labelItem.done && Director.isRunning) {
       if (Director.isPaused) {
@@ -98,7 +106,7 @@ export class Director {
         continue;
       }
 
-      process.stdout.write(
+      Director.write(
           `${ TermControls.UP_LINE.repeat(2) }${ TermControls.CLEAR_LINE }` +
           bangItem.value + TermControls.NEW_LINE.repeat(2)
       );
@@ -115,7 +123,9 @@ export class Director {
   }
 
   public static async executeDelay (timeoutMs: number = GLOBAL.RUN_DELAY): Promise<void> {
-    if (Director.shouldFastForward) return;
+    if (Director.shouldFastForward) {
+      return;
+    }
 
     let remaining = timeoutMs;
 
@@ -133,28 +143,24 @@ export class Director {
   }
 
   public static initKeyboard (): void {
-    readline.emitKeypressEvents(process.stdin as unknown as NodeJS.ReadableStream);
-    if (process.stdin.isTTY) process.stdin.setRawMode(true);
-    process.stdin.resume();
+    Director.adapter?.onKey(({ key, ctrl, isSpace }) => {
+      const lowerKey = key.toLowerCase();
 
-    process.stdin.on('keypress', (str, key) => {
-      if (key.ctrl && key.name === 'c') process.exit();
-
-      if (key.name === 'space') {
-        Director.isPaused = !Director.isPaused;
-
-        if (Director.isPaused) {
-          process.stdout.write(TermControls.SAVE_CURSOR);
-        } else {
-          process.stdout.write(TermControls.RESTORE_CURSOR);
-        }
+      if (ctrl && (lowerKey === 'c' || lowerKey === 'с')) {
+        Director.isRunning = false;
+        Director.write('\n^C [TERMINATED]\n');
       }
 
-      if (key.name === 'f' || str === 'а' || str === 'А') {
+      if (isSpace) {
+        Director.isPaused = !Director.isPaused;
+        Director.write(Director.isPaused ? TermControls.SAVE_CURSOR : TermControls.RESTORE_CURSOR);
+      }
+
+      if (lowerKey === 'f' || lowerKey === 'а') {
         Director.isFastForward = !Director.isFastForward;
       }
 
-      if (key.name === 'n' || str === 'т' || str === 'Т') {
+      if (lowerKey === 'n' || lowerKey === 'т') {
         Director.startHeaderSkip();
       }
     });
@@ -162,13 +168,10 @@ export class Director {
 
   public static release (): void {
     Director.isRunning = false;
-    if (process.stdin.isTTY) {
-      process.stdin.setRawMode(false);
-    }
-    process.stdin.pause();
+    Director.adapter?.dispose?.();
   }
 
   public static clearScreen (): void {
-    process.stdout.write(TermControls.CLEAR_SCREEN);
+    Director.write(TermControls.CLEAR_SCREEN);
   }
 }
