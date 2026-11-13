@@ -10,12 +10,16 @@
 _**Триумф** Имитации Бурной Деятельности_ позднего смузи-капитализма! 
 Еще никогда в истории человечества холостые вычисления так эффективно не снижали **углеродный след**!
 
+https://okudakaeva.github.io/existential-soul-engine/
+
 > **«В память о былом...»**  
 > — *Официальный релиз v1.1*
 
 `existential-soul-engine` успешно зажат в тиски тотального архитектурного минимализма.
 **Общий вес скомпилированного дистрибутива (production-ready JS) — всего 59 Килобайт.**
 Продукт полностью защищен от использования коммерческими фреймворками и транзитивным npm-мусором.
+
+![Performance](https://raw.githubusercontent.com/okudakaeva/existential-soul-engine/refs/heads/badges/images/lighthouse_performance.svg) ![Accessibility](https://raw.githubusercontent.com/okudakaeva/existential-soul-engine/refs/heads/badges/images/lighthouse_accessibility.svg) ![Best Practices](https://raw.githubusercontent.com/okudakaeva/existential-soul-engine/refs/heads/badges/images/lighthouse_best-practices.svg) ![SEO](https://raw.githubusercontent.com/okudakaeva/existential-soul-engine/refs/heads/badges/images/lighthouse_seo.svg)
 
 ---
 
