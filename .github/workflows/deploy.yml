@@ -40,6 +40,7 @@ jobs:
       - name: Подготовка статических файлов для GitHub Pages
         run: |
           mkdir -p _site/node_modules/@xterm
+          cp -r src/images _site/
           cp index.html _site/
           cp -r dist _site/
           cp -r node_modules/@xterm/xterm _site/node_modules/@xterm/
